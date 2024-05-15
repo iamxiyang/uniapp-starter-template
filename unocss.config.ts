@@ -16,7 +16,7 @@ export default defineConfig({
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
     pipeline: {
-      exclude: ['**/node_modules/**', '**/.git/**', '**/dist/**'],
+      exclude: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/src/tmui/**'],
     },
   },
 })

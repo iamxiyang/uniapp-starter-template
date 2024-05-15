@@ -38,7 +38,8 @@
     "build:quickapp-webview": "uni build -p quickapp-webview",
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "tmui:use": "npx tmui-cli use"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-4000720240327002",
@@ -55,6 +56,7 @@
     "@dcloudio/uni-mp-weixin": "3.0.0-4000720240327002",
     "@dcloudio/uni-mp-xhs": "3.0.0-4000720240327002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4000720240327002",
+    "pinia": "2.0.36",
     "vue": "^3.3.11",
     "vue-i18n": "^9.1.9"
   },

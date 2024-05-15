@@ -5,7 +5,7 @@
       <text class="title text-red">{{ title }}</text>
     </view>
     <Com1 />
-    <button @click="test">test</button>
+    <tm-button @click="test" label="test"></tm-button>
   </view>
 </template>
 
