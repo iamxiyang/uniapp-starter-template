@@ -5,6 +5,7 @@ import UniPages from '@uni-helper/vite-plugin-uni-pages'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UniHelperComponents, { kebabCase } from '@uni-helper/vite-plugin-uni-components'
+import UniHelperLayouts from '@uni-helper/vite-plugin-uni-layouts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,6 +22,8 @@ export default defineConfig({
     UniPages({
       dts: './src/types/uni-pages.d.ts',
     }),
+    // https://github.com/uni-helper/vite-plugin-uni-layouts
+    UniHelperLayouts(),
     // https://github.com/unplugin/unplugin-auto-import
     AutoImport({
       dts: './src/types/auto-imports.d.ts',

@@ -68,6 +68,7 @@
     "@dcloudio/vite-plugin-uni": "3.0.0-4000720240327002",
     "@uni-helper/unocss-preset-uni": "^0.2.8",
     "@uni-helper/vite-plugin-uni-components": "^0.0.9",
+    "@uni-helper/vite-plugin-uni-layouts": "^0.1.7",
     "@uni-helper/vite-plugin-uni-pages": "^0.2.20",
     "@vue/runtime-core": "^3.3.11",
     "@vue/tsconfig": "^0.1.3",
