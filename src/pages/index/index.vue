@@ -4,6 +4,8 @@
     <view class="text-area">
       <text class="title text-red">{{ title }}</text>
     </view>
+    <Com1 />
+    <button @click="test">test</button>
   </view>
 </template>
 
@@ -15,8 +17,14 @@
 </route>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
   const title = ref('Hello')
+
+  const test = () => {
+    uni.showToast({
+      title: title.value,
+      icon: 'none',
+    })
+  }
 </script>
 
 <style>
