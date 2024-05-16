@@ -28,6 +28,10 @@ function test() {
       </text>
     </view>
     <Com1 />
+    <view>
+      <text class="i-carbon:edit-filter text-red" />
+      <text class="i-carbon-share text-blue" />
+    </view>
     <tm-button label="test" @click="test" />
   </view>
 </template>

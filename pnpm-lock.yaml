@@ -73,6 +73,9 @@ devDependencies:
   '@dcloudio/vite-plugin-uni':
     specifier: 3.0.0-4000720240327002
     version: 3.0.0-4000720240327002(postcss@8.4.38)(vite@4.3.5)(vue@3.4.27)
+  '@iconify-json/carbon':
+    specifier: ^1.1.33
+    version: 1.1.33
   '@uni-helper/eslint-config':
     specifier: ^0.0.6
     version: 0.0.6(@vue/compiler-sfc@3.4.27)(eslint@9.2.0)(typescript@4.9.5)
@@ -2459,6 +2462,12 @@ packages:
   /@humanwhocodes/retry@0.2.4:
     resolution: {integrity: sha512-Ttl/jHpxfS3st5sxwICYfk4pOH0WrLI1SpW283GgQL7sCWU7EHIOhX4b4fkIxr3tkfzwg8+FNojtzsIEE7Ecgg==}
     engines: {node: '>=18.18'}
+    dev: true
+
+  /@iconify-json/carbon@1.1.33:
+    resolution: {integrity: sha512-TsjyOqhqMhIEdUnteGPMoKvbY1SIsM8A4sASHIg+YiKoDGWqlwD/g4pLXoAoVj3NL3E1hRxoTIY1oqpndXIxvg==}
+    dependencies:
+      '@iconify/types': 2.0.0
     dev: true
 
   /@iconify/types@2.0.0:
