@@ -1,0 +1,145 @@
+name: Build and Deploy to WeChat Mini Program
+
+on:
+  push:
+    branches:
+      - '**' # 对所有分支生效
+    # 手动触发部署
+  workflow_dispatch:
+
+env:
+  TZ: Asia/Shanghai
+  
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get Version from package.json
+        id: get_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Get Last Commit Info
+        id: get_commit_info
+        run: |
+          COMMIT_INFO=$(git log -n 1 "${{ github.sha }}" --pretty=format:'%s@%an')
+          echo "COMMIT_INFO=$COMMIT_INFO" >> "$GITHUB_OUTPUT"
+
+      - name: Write WECHAT_ENCODINGAESKEY to private.key
+        run: echo -n '${{ secrets.WECHAT_ENCODINGAESKEY }}' > private.key
+
+      - name: Generate .minicirc File
+        id: post_upload_mini
+        run: |
+          echo '{
+            "weixin": {
+              "appid": "${{ secrets.WECHAT_APPID }}",
+              "privateKeyPath": "private.key",
+              "projectPath": "dist/build/mp-weixin",
+              "setting":{
+                "es6": true,
+                "es7": true,
+                "codeProtect": true,
+                "autoPrefixWXSS": true
+              }
+            },
+            "version": "${{ steps.get_version.outputs.VERSION }}",
+            "desc": "${{ steps.get_commit_info.outputs.COMMIT_INFO }}"
+          }' > .minicirc
+
+      - name: Build Mini Program And Deploy to WeChat Mini Program
+        id: build-mini-program
+        run: |
+          pnpm upload:mp-weixin
+
+      - name: Build Result Notice
+        if: ${{ !cancelled() }}
+        uses: actions/github-script@v7
+        env:
+          CONCLUSION: ${{ job.status }}
+          WXPUSHER_APP_TOKEN: ${{ secrets.WXPUSHER_APP_TOKEN }}
+          WXPUSHER_TOPIC_IDS: ${{ secrets.WXPUSHER_TOPIC_IDS }}
+        with:
+          script: |
+            const { WXPUSHER_APP_TOKEN, CONCLUSION, WXPUSHER_TOPIC_IDS } = process.env
+            if (!WXPUSHER_APP_TOKEN) {
+              console.info('没有设置WXPUSHER_APP_TOKEN，取消推送')
+              return 
+            }
+            if (!WXPUSHER_TOPIC_IDS) {
+              console.info('没有设置WXPUSHER_TOPIC_IDS，取消推送')
+              return 
+            }
+            const { payload, pusher, eventName, ref, actor } = context || {}
+            const commit = payload.head_commit
+            const timeFormat = (timestamp) => {
+              const date = new Date(timestamp)
+              const Y = `${date.getFullYear()}-`
+              const M = `${date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-`
+              const D = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()} `
+              const h = `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}:`
+              const m = `${date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()}:`
+              const s = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds()
+              return Y + M + D + h + m + s
+            }
+
+            const html = `
+              <p><strong style="color:red;">结论:</strong> ${CONCLUSION}</p>
+              <p><strong>提交消息:</strong> ${commit.message}</p>
+              <p><strong>提交作者:</strong> ${commit.author.name} ${commit.author.username}</p>
+              <details>
+                <summary><strong>详情</strong></summary>
+                <p><strong>仓库:</strong> ${payload.repository.full_name}</p>
+                <p><strong>分支:</strong> ${ref}</p>
+                <p><strong>提交时间:</strong> ${timeFormat(commit.timestamp)}</p>
+                <p><strong>触发者:</strong> ${actor} / ${eventName}</p>
+              </details>
+            `
+            const projectName = payload.repository.name
+            const response = await fetch('https://wxpusher.zjiecode.com/api/send/message', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                appToken: WXPUSHER_APP_TOKEN,
+                content: html,
+                contentType: 2,
+                summary: `${projectName}构建: ${CONCLUSION}`,
+                topicIds: WXPUSHER_TOPIC_IDS,
+              }),
+            })
+            const responseData = await response.json()
+            // console.log(responseData)
