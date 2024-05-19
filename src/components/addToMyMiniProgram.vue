@@ -8,9 +8,11 @@ function close() {
 }
 
 onMounted(async () => {
+  // #ifdef MP-WEIXIN
   const { added } = await uni.checkIsAddedToMyMiniProgram()
   const lastShowTime = uni.getStorageSync('lastShowTime') || 0
   show.value = !added && (!lastShowTime || Date.now() - lastShowTime > 24 * 60 * 60 * 1000)
+  // #endif
 })
 </script>
 

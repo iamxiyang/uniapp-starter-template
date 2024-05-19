@@ -14,12 +14,14 @@ const containerRight = ref(0)
 const arrowRight = ref(0)
 
 onMounted(() => {
+  // #ifdef MP-WEIXIN
   const res = uni.getMenuButtonBoundingClientRect()
   const device = getDeviceInfo()
   if (!device.window)
     return
   containerRight.value = device.window.windowWidth - res.right
   arrowRight.value = res.width - res.width / (device.isPcOrMac ? 6 : 4) + (device.isPcOrMac ? 9 : 0)
+  // #endif
 })
 
 watch(() => props.show, (val) => {
