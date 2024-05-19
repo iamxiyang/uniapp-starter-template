@@ -15,5 +15,8 @@ declare module '@vue/runtime-core' {
     TmApp: typeof import('@/tmui/components/tm-app/tm-app.vue')['default']
     TmButton: typeof import('@/tmui/components/tm-button/tm-button.vue')['default']
     TmIcon: typeof import('@/tmui/components/tm-icon/tm-icon.vue')['default']
+    UvLine: typeof import('@climblee/uv-ui/components/uv-line/uv-line.vue')['default']
+    UvLoadingIcon: typeof import('@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon.vue')['default']
+    UvLoadMore: typeof import('@climblee/uv-ui/components/uv-load-more/uv-load-more.vue')['default']
   }
 }

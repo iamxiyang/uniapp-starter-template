@@ -11,10 +11,8 @@
 const title = ref('Hello')
 
 function test() {
-  // console.log('test')
-  uni.showToast({
-    title: title.value,
-    icon: 'none',
+  uni.navigateTo({
+    url: '/pages/demo/list',
   })
 }
 </script>
@@ -32,7 +30,7 @@ function test() {
       <text class="i-carbon:edit-filter text-red" />
       <text class="i-carbon-share text-blue" />
     </view>
-    <tm-button label="test" @click="test" />
+    <tm-button label="去列表" @click="test" />
   </view>
 </template>
 

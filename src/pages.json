@@ -6,6 +6,14 @@
       "style": {
         "navigationBarTitleText": "首页"
       }
+    },
+    {
+      "path": "pages/demo/list",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "列表",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
     }
   ],
   "globalStyle": {
