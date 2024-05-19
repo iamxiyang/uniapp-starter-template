@@ -9,8 +9,11 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AddToMyMiniProgram: typeof import('./../components/addToMyMiniProgram.vue')['default']
     Com1: typeof import('./../components/com1/index.vue')['default']
+    MiniProgramTip: typeof import('./../components/miniProgramTip.vue')['default']
     TmApp: typeof import('@/tmui/components/tm-app/tm-app.vue')['default']
     TmButton: typeof import('@/tmui/components/tm-button/tm-button.vue')['default']
+    TmIcon: typeof import('@/tmui/components/tm-icon/tm-icon.vue')['default']
   }
 }
