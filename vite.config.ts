@@ -41,6 +41,18 @@ export default defineConfig({
         {
           type: 'component',
           resolve: (name: string) => {
+            if (name.match(/^Uv[A-Z]/)) {
+              const partialName = kebabCase(name)
+              return {
+                name,
+                from: `@climblee/uv-ui/components/${partialName}/${partialName}.vue`,
+              }
+            }
+          },
+        },
+        {
+          type: 'component',
+          resolve: (name: string) => {
             if (name.match(/^Tm[A-Z]/)) {
               const partialName = kebabCase(name)
               return {
