@@ -9,7 +9,7 @@ on:
 
 env:
   TZ: Asia/Shanghai
-  
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -96,11 +96,11 @@ jobs:
             const { WXPUSHER_APP_TOKEN, CONCLUSION, WXPUSHER_TOPIC_IDS } = process.env
             if (!WXPUSHER_APP_TOKEN) {
               console.info('没有设置WXPUSHER_APP_TOKEN，取消推送')
-              return 
+              return
             }
             if (!WXPUSHER_TOPIC_IDS) {
               console.info('没有设置WXPUSHER_TOPIC_IDS，取消推送')
-              return 
+              return
             }
             const { payload, pusher, eventName, ref, actor } = context || {}
             const commit = payload.head_commit
